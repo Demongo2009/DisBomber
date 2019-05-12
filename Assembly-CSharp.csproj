@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\GameManager\GameManager.cs" />
     <Compile Include="Assets\Scripts\GameManager\HUDManager.cs" />
     <Compile Include="Assets\Scripts\GameManager\ParticleManager.cs" />
+    <Compile Include="Assets\Scripts\GameManager\SoundEffectManager.cs" />
     <Compile Include="Assets\Scripts\Input\InputWrapperTappedOnBomb.cs" />
     <Compile Include="Assets\Scripts\Input\Interfaces\IInputWrapper.cs" />
     <Compile Include="Assets\Scripts\MainMenu\FileReader.cs" />

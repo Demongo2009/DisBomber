@@ -33,6 +33,7 @@ public class SceneInitializer : MonoBehaviour
     [SerializeField] private GameObject gameManagerObject;
     [SerializeField] private GameObject particleManagerObject;
     [SerializeField] private GameObject hudManagerObject;
+    [SerializeField] private GameObject soundEffectManagerObject;
 //    [SerializeField] private GameObject tapManagerObject;
 
 
@@ -42,6 +43,8 @@ public class SceneInitializer : MonoBehaviour
     private ParticleManager particleManager;
 
     private HUDManager hudManager;
+
+    private SoundEffectManager soundEffectManager;
 //    private TapManager tapManager;
     
     // Start is called before the first frame update
@@ -56,7 +59,10 @@ public class SceneInitializer : MonoBehaviour
         gameManager = gameManagerObject.GetComponent<GameManager>();
         particleManager = particleManagerObject.GetComponent<ParticleManager>();
         hudManager = hudManagerObject.GetComponent<HUDManager>();
+        soundEffectManager = soundEffectManagerObject.GetComponent<SoundEffectManager>();
 //        tapManager = tapManagerObject.GetComponent<TapManager>();
+
+        soundEffectManager.Initialize(coroutineRunner);
         hudManager.Initialize(coroutineRunner);
         particleManager.Initialize(coroutineRunner);
         gameManager.Initialize(coroutineRunner,hudManager);

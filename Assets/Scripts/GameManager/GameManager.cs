@@ -1,22 +1,24 @@
 
 using System;
 using System.Collections;
-using System.ComponentModel;
-using System.IO;
-using System.Threading;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class GameManager: MonoBehaviour
 {
     public static bool isGameOver = false;
     
     [Header("Light")] 
-    [SerializeField] private Light light;
+    [SerializeField] private Light mainLight;
 
+    [Header("Camera")] 
+    [SerializeField] private Camera mainCamera;
+    [SerializeField] private float shakeDuration;
+    [SerializeField] private float shakeAmount;
+    [SerializeField] private float decreaseFactor;
+    
+    
     private ICoroutineRunner coroutineRunner;
     private HUDManager hudManager;
 
@@ -36,6 +38,8 @@ public class GameManager: MonoBehaviour
         KillerBombManager.OnDisarm += GameOver;
     }
     
+    
+    
 
     private void GameOver(GameObject caller)
     {
@@ -44,7 +48,8 @@ public class GameManager: MonoBehaviour
         {
             return;
         }
-        
+
+        coroutineRunner.StartCoroutine(ShakeScreen());
         isGameOver = true;
         hudManager.SetTimeSurvived(Time.time);
 
@@ -52,11 +57,29 @@ public class GameManager: MonoBehaviour
         
     }
 
+    IEnumerator ShakeScreen()
+    {
+
+        Vector3 originalCameraPosition = mainCamera.transform.position;
+        
+        while (shakeDuration > 0)
+        {
+            mainCamera.transform.position = originalCameraPosition + Random.insideUnitSphere * shakeAmount;
+            shakeDuration -= Time.deltaTime * decreaseFactor;
+            yield return new WaitForEndOfFrame();
+        }
+
+        mainCamera.transform.position = originalCameraPosition;
+
+
+
+    }
+
     IEnumerator WaitForGameOverScreen()
     {
         yield return new WaitForSeconds(1.0f);
         
-        light.intensity = 0.25f;
+        mainLight.intensity = 0.25f;
         float timeSurvived = hudManager.GetTimeSurvived();
         hudManager.ShowGameOverWindow(IsNewHighScore(timeSurvived));
     }

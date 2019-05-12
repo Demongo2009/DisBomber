@@ -76,8 +76,9 @@ public class HUDManager: MonoBehaviour
         timeCounterWindow.SetActive(false); 
         gameOverWindow.SetActive(true);
         
-        string stringTimeSurvived = TimeToString(timeSurvived);
-        gameOverTimeCount.text = "Your time: " + stringTimeSurvived;
+        
+
+        coroutineRunner.StartCoroutine(CountGameOverTime());
 
         if (isNewHighscore)
         {
@@ -88,6 +89,37 @@ public class HUDManager: MonoBehaviour
             gameOverTimeIsHighScore.text = "No new high score ;( ";
         }
         
+    }
+
+    IEnumerator CountGameOverTime()
+    {
+        float currentTime = 0;
+        while (currentTime != timeSurvived)
+        {
+            float differenceBetweenAdjustmentFactor = Mathf.Max(1.0f, (timeSurvived - currentTime/timeSurvived));
+            currentTime += differenceBetweenAdjustmentFactor * Time.deltaTime;
+            if (currentTime >= timeSurvived)
+            {
+                currentTime = timeSurvived;
+            }
+            string stringCurrentTime = TimeToString(currentTime);
+            gameOverTimeCount.text = "Your time: " + stringCurrentTime;
+            
+            yield return new WaitForEndOfFrame();
+            
+            if (Input.touchCount > 0)
+            {
+                Touch currentTouch = Input.touches[0];
+                if (currentTouch.phase == TouchPhase.Began)
+                {
+                    string stringTimeSurvived = TimeToString(timeSurvived);
+                    gameOverTimeCount.text = "Your time: " + stringTimeSurvived;
+                    break;
+                }
+            }
+        
+
+        }
     }
 
 

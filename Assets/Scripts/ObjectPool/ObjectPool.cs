@@ -12,6 +12,7 @@ public class ObjectPool
     
     private Queue<GameObject> objectInPoolQueue = new Queue<GameObject>();
 
+
     public ObjectPool(GameObject objectPrefab, Transform poolTransform, int optimumObjectAmount)
     {
         this.objectPrefab = objectPrefab;
@@ -23,6 +24,7 @@ public class ObjectPool
     {
         GameObject createdObject = GameObject.Instantiate(objectPrefab);
         objectInPoolQueue.Enqueue(createdObject);
+
         createdObject.SetActive(false);
 
         createdObject.transform.parent = poolTransform;
@@ -42,15 +44,12 @@ public class ObjectPool
     {
         if (objectInPoolQueue.Count > optimumObjectAmount)
         {
+
             GameObject.Destroy(objectToReturn);
             return;
         }
         objectToReturn.SetActive(false);
         objectInPoolQueue.Enqueue(objectToReturn);
     }
-
-    public int GetObjectCount()
-    {
-        return objectInPoolQueue.Count;
-    }
+    
 }

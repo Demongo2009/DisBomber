@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ParticleManager : MonoBehaviour
 {
+    [Header("Effects")]
     [SerializeField] private GameObject explosionEffect;
     [SerializeField] private GameObject debrisEffect;
     
@@ -18,7 +19,6 @@ public class ParticleManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("helo");
         NormalBombManager.OnExplosion += MakeExplosion;
         KillerBombManager.OnDisarm += MakeExplosion;
     }
@@ -28,10 +28,11 @@ public class ParticleManager : MonoBehaviour
     {
 
         Vector3 explodingObjectPosition = explodingObject.transform.position;
-        Debug.Log(explodingObjectPosition.x.ToString());
-        Debug.Log(explodingObjectPosition.y.ToString());
         GameObject explosionParticles = Instantiate(explosionEffect, explodingObjectPosition, Quaternion.identity);
         GameObject debrisParticles = Instantiate(debrisEffect, explodingObjectPosition, Quaternion.identity);
+
+        explosionParticles.transform.parent = transform;
+        debrisParticles.transform.parent = transform;
 
         coroutineRunner.StartCoroutine(DestroyParticlesAfterDuration(explosionParticles));
         coroutineRunner.StartCoroutine(DestroyParticlesAfterDuration(debrisParticles));

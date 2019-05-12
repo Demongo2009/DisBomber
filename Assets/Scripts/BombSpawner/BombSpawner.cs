@@ -14,7 +14,7 @@ public class BombSpawner : IBombSpawner
     private float adjustmentFactor;
     private float differenceFactor;
 
-    private const int BombsOnSceneMaxAmount = 10;
+    private const int BombsOnSceneMaxAmount = 2;
     
     private float timeToHarderDifficulty;
 
@@ -128,11 +128,7 @@ public class BombSpawner : IBombSpawner
 
     private void SpawnBombs(GameObject bombPrefab, float timeToActionDiffMaxMin,float timeToActionMax, ObjectPool objectPool)
     {
-        if ( objectPool.GetObjectCount() > BombsOnSceneMaxAmount )
-        {
-            return;
-        }
-        
+
         float bombRadius = bombPrefab.transform.localScale.x;
 
         Vector3 targetPosition = new Vector3(GetRandomX(),GetRandomY(),bombZ);
