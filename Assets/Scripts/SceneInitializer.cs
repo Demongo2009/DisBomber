@@ -31,11 +31,17 @@ public class SceneInitializer : MonoBehaviour
     [Header("Tools")] 
     [SerializeField] private GameObject coroutineRunnerPrefab;
     [SerializeField] private GameObject gameManagerObject;
+    [SerializeField] private GameObject particleManagerObject;
+    [SerializeField] private GameObject hudManagerObject;
 //    [SerializeField] private GameObject tapManagerObject;
 
 
     private ICoroutineRunner coroutineRunner;
     private GameManager gameManager;
+
+    private ParticleManager particleManager;
+
+    private HUDManager hudManager;
 //    private TapManager tapManager;
     
     // Start is called before the first frame update
@@ -48,15 +54,18 @@ public class SceneInitializer : MonoBehaviour
     {
         coroutineRunner = Instantiate(coroutineRunnerPrefab).GetComponent<ICoroutineRunner>();
         gameManager = gameManagerObject.GetComponent<GameManager>();
+        particleManager = particleManagerObject.GetComponent<ParticleManager>();
+        hudManager = hudManagerObject.GetComponent<HUDManager>();
 //        tapManager = tapManagerObject.GetComponent<TapManager>();
-        
-        gameManager.Initialize(coroutineRunner);
+        hudManager.Initialize(coroutineRunner);
+        particleManager.Initialize(coroutineRunner);
+        gameManager.Initialize(coroutineRunner,hudManager);
         ObjectPool normalBombObjectPool = new ObjectPool(normalBomb, normalBombPool.transform, optimumNormalBombAmount );
         ObjectPool killerBombObjectPool = new ObjectPool(killerBomb, killerBombPool.transform, optimumKillerBombAmount );
 
         BombSpawner bombSpawner = new BombSpawner(windowXMin,windowXMax,windowYMin,windowYMax,spawningZ,normalBomb,
             spawnCooldown,killerBomb,coroutineRunner,timeToExplodeMax,timeToExplodeDiffBetweenMaxMin,timeToDisappear,
-            gameManager,normalBombObjectPool,killerBombObjectPool, adjustmentFactor,timeToHarderDifficulty, differenceFactor);
+            normalBombObjectPool,killerBombObjectPool, adjustmentFactor,timeToHarderDifficulty, differenceFactor);
         
         coroutineRunner.StartCoroutine(WaitForStart(bombSpawner,secondsToStartSpawning));
 

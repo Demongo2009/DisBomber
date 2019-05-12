@@ -34,7 +34,7 @@ public class BombSpawner : IBombSpawner
 
     private ICoroutineRunner coroutineRunner;
     
-    private GameManager gameManager;
+
 
     private ObjectPool normalBombObjectPool;
     private ObjectPool killerBombObjectPool;
@@ -42,7 +42,7 @@ public class BombSpawner : IBombSpawner
     public BombSpawner(float windowXMin, float windowXMax, float windowYMin, float windowYMax, float bombZ,
         GameObject normalBombPrefab, float spawnBombCooldown, GameObject killerBombPrefab,
         ICoroutineRunner coroutineRunner, float timeToExplodeMax, float timeToExplodeDiffBetweenMaxMin, float timeToDisappear,
-        GameManager gameManager, ObjectPool normalBombObjectPool, ObjectPool killerBombObjectPool, float adjustmentFactor, float timeToHarderDifficulty,
+        ObjectPool normalBombObjectPool, ObjectPool killerBombObjectPool, float adjustmentFactor, float timeToHarderDifficulty,
         float differenceFactor)
     {
         this.windowXMin = windowXMin;
@@ -62,8 +62,6 @@ public class BombSpawner : IBombSpawner
 
         this.coroutineRunner = coroutineRunner;
         
-        
-        this.gameManager = gameManager;
         
         this.normalBombObjectPool = normalBombObjectPool;
         this.killerBombObjectPool = killerBombObjectPool;
@@ -98,7 +96,7 @@ public class BombSpawner : IBombSpawner
         {
             spawnBombCooldown = Mathf.Max(spawnBombCooldown * adjustmentFactor, LowerBoundarySpawnBombCooldown);
 //            spawnTimeKillerBomb *= adjustmentFactor;
-Debug.Log(spawnBombCooldown);
+//Debug.Log(spawnBombCooldown);
             yield return new WaitForSeconds(timeToHarderDifficulty);
         }
     }

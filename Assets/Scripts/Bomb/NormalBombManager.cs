@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 
-namespace Bomb
-{
+
     public class NormalBombManager: MonoBehaviour, IBombManager
     {
+        public delegate void ExplodeAction(GameObject explodingObject); 
+        public static event ExplodeAction OnExplosion;
 
         private float timeToExplode;
         private ObjectPool objectPool;
@@ -12,7 +13,6 @@ namespace Bomb
 
         private float initialTimeToExplode;
         private int allTicks = 9;
-        private bool isTapped;
 
         public void Initialize(IInputWrapper inputWrapper,float timeToExplode, ObjectPool objectPool)
         {
@@ -54,7 +54,11 @@ namespace Bomb
         {
             if (timeToExplode <= 0)
             {
-                GameManager.isGameOver= true;
+                if (OnExplosion != null)
+                {
+                    OnExplosion(gameObject);
+                }
+                
                 objectPool.ReturnToPool(gameObject);
             }
         }
@@ -63,7 +67,7 @@ namespace Bomb
         {
             if (inputWrapper.IsTapped(gameObject))
             {
-                isTapped = false;
+
                 DisarmBomb();
             }
         }
@@ -73,10 +77,5 @@ namespace Bomb
             objectPool.ReturnToPool(this.gameObject);
 
         }
-
-        public void Tapped()
-        {
-            isTapped = true;
-        }
+        
     }
-}

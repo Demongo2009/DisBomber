@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class KillerBombManager: MonoBehaviour, IBombManager
 {
+    
+    public delegate void DisarmAction(GameObject disarmedObject); 
+    public static event DisarmAction OnDisarm;
 
     private float timeToDisappear;
     private ObjectPool objectPool;
     private IInputWrapper inputWrapper;
-    
-    private bool isTapped =false;
 
     public void Initialize( IInputWrapper inputWrapper, float timeToDisappear, ObjectPool objectPool)
     {
@@ -41,21 +42,20 @@ public class KillerBombManager: MonoBehaviour, IBombManager
     {
         if (inputWrapper.IsTapped(gameObject))
         {
-            isTapped = false;
             DisarmBomb();
         }
     }
 
     private void DisarmBomb()
     {
-        GameManager.isGameOver = true;
+        if (OnDisarm != null && !GameManager.isGameOver)
+        {
+            OnDisarm(gameObject);
+        }
         objectPool.ReturnToPool(gameObject);
 
     }
 
-    public void Tapped()
-    {
-        isTapped = true;
-    }
+
     
 }
