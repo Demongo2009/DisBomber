@@ -1,6 +1,12 @@
 # DisBomber
 Game where you disarm bombs.
 
+# Snapshots
+
+![Menu](menu.png "Menu")
+
+![Game](game.png "Game")
+
 # Credits
 Game created by me.
 
